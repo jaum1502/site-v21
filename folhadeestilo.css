@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Oswald:wght@200..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Righteous&display=swap');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+header {
+    background-color: #333;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.menu {
+    margin-left: auto;/
+}
+
+.menu ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.menu ul li {
+    display: inline;
+    margin-right: 30px;
+}
+
+.menu ul li a {
+    text-decoration: none;
+    color: white;
+    font-size: 25px;
+    font-family: "Kanit", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+}
+
+.menu ul li a:hover {
+    color: lightgray;
+}
+
+.menu ul li a:hover {
+    color: rgb(196, 2, 2);
+}
+
+footer {
+    position: absolute;
+    background-color: black;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    height: 40px;
+    font-size: 25px;
+    font-family: "Kanit", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+}
+
+.texto-footer {
+    color: white;
+margin-left: 20px;
+}
+
+.logo a{
+    color: white;
+    font-family: "Righteous", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 30px;
+    text-decoration: none;
+}
+
+.logo a:hover{
+    color: rgb(43, 255, 0);
+}
