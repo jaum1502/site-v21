@@ -7,7 +7,8 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
+    background: rgb(2,0,36);
+    background: linear-gradient(279deg, rgba(2,0,36,1) 9%, rgba(121,9,9,1) 86%);
 }
 
 header {
@@ -81,3 +82,4 @@ margin-left: 20px;
 .logo a:hover{
     color: rgb(43, 255, 0);
 }
+

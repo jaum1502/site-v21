@@ -7,9 +7,11 @@
     <link rel="stylesheet" type="text/css" href="folhadeestilo.css">
 </head>
 <body>
+   <div class="container-principal">
+    
     <header>
         <div class="logo">
-            <a href="index.html" class="href">arqsEXE</a>
+            <a href="" class="href">arqsEXE</a>
         </div>
         <nav class="menu">
             <ul>
@@ -25,10 +27,25 @@
         </footer>
 
 
-                    
+
+        <button class="copy-button" onclick="copyToClipboard()">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            </svg>
+            <span> Copiar </span>
+        </button>
+        <div class="confirm-overlay" id="overlay">
+            <div class="confirm-box">
+                <div class="confirm-box__header">
+                    <div class="confirm-box__header__text">
+
+                    </div>
+                </div>
+                <div class="confirm-box__body">
+                    <script src="copiar.js"></script>
+                </div>
 
 
 
 
 </body>
-</html>
+</html> 
