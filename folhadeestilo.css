@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Oswald:wght@200..700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Righteous&display=swap');
+
 * {
     margin: 0;
     padding: 0;
@@ -7,12 +8,26 @@
 }
 
 body {
-    background: rgb(2,0,36);
-    background: linear-gradient(279deg, rgba(2,0,36,1) 9%, rgba(121,9,9,1) 86%);
+    background-image: url('background2.jpg');
+    background-size: cover;
+    background-position: center center;
+    font-family: "Kanit", sans-serif;
+    font-weight: 500;
+    font-style: normal;
+    color: white;
+    margin: 0;
+    padding: 0;
+    height: 100vh; 
+    filter: blur();
 }
 
+
+
+/* Restante do seu CSS permanece o mesmo */
+
+
 header {
-    background-color: #333;
+    background-color: rgba(0, 0, 0, 0.925); /* Adiciona um fundo escuro semi-transparente */
     padding: 20px;
     display: flex;
     justify-content: space-between;
@@ -20,7 +35,7 @@ header {
 }
 
 .menu {
-    margin-left: auto;/
+    margin-left: auto;
 }
 
 .menu ul {
@@ -38,48 +53,33 @@ header {
     text-decoration: none;
     color: white;
     font-size: 25px;
-    font-family: "Kanit", sans-serif;
-    font-weight: 500;
-    font-style: normal;
 }
 
 .menu ul li a:hover {
     color: lightgray;
 }
 
-.menu ul li a:hover {
-    color: rgb(196, 2, 2);
-}
-
-footer {
-    position: absolute;
-    background-color: black;
-    bottom: 0;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    height: 40px;
-    font-size: 25px;
-    font-family: "Kanit", sans-serif;
-    font-weight: 500;
-    font-style: normal;
-}
-
-.texto-footer {
-    color: white;
-margin-left: 20px;
-}
-
-.logo a{
+.logo a {
     color: white;
     font-family: "Righteous", sans-serif;
-    font-weight: 400;
-    font-style: normal;
     font-size: 30px;
     text-decoration: none;
 }
 
-.logo a:hover{
+.logo a:hover {
     color: rgb(43, 255, 0);
 }
 
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.7); /* Adiciona um fundo escuro semi-transparente */
+    display: flex;
+    align-items: center;
+    height: 40px;
+}
+
+.texto-footer {
+    margin-left: 20px;
+}
