@@ -27,7 +27,7 @@ body {
 
 
 header {
-    background-color: rgba(0, 0, 0, 0.925); /* Adiciona um fundo escuro semi-transparente */
+    background-color: rgba(38, 38, 38, 0.571); /* Adiciona um fundo escuro semi-transparente */
     padding: 20px;
     display: flex;
     justify-content: space-between;
