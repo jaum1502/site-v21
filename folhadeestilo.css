@@ -39,7 +39,6 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: fixed;
     width: 100%;
 }
 
@@ -65,7 +64,8 @@ header {
     transition: 0.5s;
 }
 
-.menu ul li a:hover, button :focus {
+.menu ul li a:hover,
+button :focus {
     color: red;
 }
 
@@ -102,35 +102,45 @@ footer {
 
 
 
-.explicacao{
-    background-color: green;
-    display: flex;
-    position: absolute;
-    width: 50vw;
-    height: 50vh    ;
-    left: 50px;
-    top:13%;
-    border-radius: 20px;
-}
-
-.botao{
-   position: absolute;
-    width: 80%;
-    height: 80%;
-left: 20px;
-    background-color: red;
-    
-}
-
-button{
-    background: none;
-    border: none;;
-}
-
-.texto{
+.explicacao {
+    background-color: rgba(0, 0, 0, 0.589);
     position: relative;
-    
+    display: flex;
+    width: 900px;
+    height: 400px;
+    border-radius: 20px;
+    top: 10px;
+    left: 10px;
+
+}
+
+.botao {
+    position: relative;
+    width: 850px;
+    height: 350px;
+    left: 20px;
+    top: 10px;
+}
+
+.botao h4 {
+    font-size: 25px;
+}
+
+pre {
+    font-size: 25px;
+}
+
+button {
+    background: none;
+    border: none;
+    ;
+}
+
+.texto {
+    position: absolute;
+    top: 0;
     align-items: normal;
+    left: 130px;
 }
 
 
@@ -144,7 +154,9 @@ button{
 
 
 
-/*---------------------------------------------*/
+
+
+/*------------------------------------------*/
 @media only screen and (max-width: 735px) {
     button {
         display: none;
@@ -174,9 +186,10 @@ button{
         transform: translate(-50%, -50%);
         font-size: 200%;
         text-align: center;
-    }   
-.explicacao{
-    display: none;
-}
+    }
+
+    .explicacao {
+        display: none;
+    }
 
 }
