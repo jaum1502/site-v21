@@ -1,22 +1,224 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>seiosSHOP</title>
-    <link rel="stylesheet   " type="text/css" href="folhadeestilo.css">
+    <title>arqsEXE | Início</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;500;700&family=Righteous&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Kanit", sans-serif;
+            background-color: #000;
+            color: white;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Fundo */
+        .background-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('background5.jpg');
+            background-size: cover;
+            background-position: center;
+            filter: blur(8px) brightness(0.9);
+            z-index: -1;
+        }
+
+        /* Header */
+        header {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 15px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo a {
+            color: #ffffff;
+            font-family: "Righteous", sans-serif;
+            font-size: 28px;
+            text-decoration: none;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .logo a:hover {
+            color: #2bff00;
+            text-shadow: 0 0 10px #2bff00;
+        }
+
+        .menu ul {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+        }
+
+        .menu ul li a {
+            text-decoration: none;
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: 500;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+            transition: 0.3s;
+        }
+
+        .menu ul li a:hover {
+            color: #ff4d4d;
+        }
+
+        /* Container Central */
+        .container-principal {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* CARD Ajustado (Tamanho controlado) */
+        .explicacao {
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 30px;
+            padding: 50px;
+            display: flex;
+            align-items: center;
+            max-width: 950px; /* Levemente mais largo para caber os botões maiores */
+            width: 100%;
+            box-shadow: 0 25px 55px rgba(0, 0, 0, 0.65);
+            min-height: 450px;
+        }
+
+        /* Coluna dos Ícones */
+        .social-side {
+            flex: 0 0 200px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px; /* Espaço aumentado entre botões */
+            align-items: center;
+            justify-content: center;
+            border-right: 2px solid rgba(255,255,255,0.1);
+            padding-right: 30px;
+        }
+
+        .social-btn {
+            width: 85px;  /* Aumentei de 60px para 85px (Meio termo) */
+            height: 85px;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.25);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .social-btn img {
+            width: 45px; /* Ícone interno maior */
+            height: 45px;
+            filter: drop-shadow(0 2px 3px rgba(0,0,0,0.3));
+        }
+
+        .social-btn.insta:hover {
+            background: linear-gradient(45deg, #f09433, #bc1888);
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .social-btn.discord:hover {
+            background: #5865F2;
+            transform: scale(1.1) rotate(-5deg);
+        }
+
+        .social-btn.twitter:hover {
+            background: #000000;
+            transform: scale(1.1) rotate(5deg);
+            border-color: #333;
+        }
+
+        /* Coluna do Texto */
+        .texto {
+            margin-left: 50px;
+            flex: 1;
+        }
+
+        .texto h1 {
+            font-family: 'Righteous', sans-serif;
+            font-size: 55px; /* Aumentei de 42px para 55px (Destaque sem exagero) */
+            margin-bottom: 20px;
+            color: #ffffff;
+            text-shadow: 0 3px 8px rgba(0,0,0,0.6);
+            text-transform: uppercase;
+            line-height: 1;
+        }
+
+        .ola {
+            font-size: 22px; /* Aumentei de 19px para 22px */
+            line-height: 1.5;
+            color: #ffffff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.9);
+            font-weight: 300;
+        }
+
+        /* Footer */
+        footer {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 10px 20px;
+            text-align: left;
+            font-size: 14px;
+            color: #ffffff;
+            font-weight: 500;
+        }
+
+        /* Mobile */
+        .textolamento { display: none; }
+
+        @media only screen and (max-width: 735px) {
+            header, .container-principal, footer { display: none; }
+            body { background-color: #000; display: block; }
+            .textolamento {
+                display: flex;
+                height: 100vh;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                padding: 40px;
+                font-size: 24px;
+            }
+        }
+    </style>
 </head>
 
-<body bgcolor="black">
+<body>
     <div class="background-image"></div>
+    
     <p class="textolamento">
-        ESSE SITE FOI FEITO APENAS PARA COMPUTADORES...<BR><BR>
+        ESSE SITE FOI FEITO APENAS PARA COMPUTADORES...<br><br>
         OBRIGADO PELA COMPREENSÃO.
     </p>
+
     <header>
         <div class="logo">
-            <a href="" class="href">arqsEXE</a>
+            <a href="index.html">arqsEXE</a>
         </div>
         <nav class="menu">
             <ul>
@@ -27,48 +229,34 @@
             </ul>
         </nav>
     </header>
-    <div class="explicacao">
-        <h1 class="a1">INÍCIO</h1>
-        <div class="ola">
-            Cansado de perder tempo com aqueles códigos maçantes e repetitivos? Chega de sofrê, meu parça!
 
-            Esse site é o seu portal da praticidade, onde você encontra scripts do balacobaco pra turbinar seu dia a
-            dia!
+    <div class="container-principal">
+        <div class="explicacao">
+            
+            <div class="social-side">
+                <button class="social-btn insta" title="Instagram">
+                    <img src="instagram-logo.png" alt="Instagram">
+                </button>
+                <button class="social-btn discord" title="Discord">
+                    <img src="discord-logo.png" alt="Discord">
+                </button>
+                <button class="social-btn twitter" title="X / Twitter">
+                    <img src="x-logo.png" alt="X">
+                </button>
+            </div>
 
-            Com essa galera de scripts fera, você vai:<br>
+            <div class="texto">
+                <h1>INÍCIO</h1>
+                <div class="ola">
+                    Site do balacobaco. Esse site tem algumas ferramentas e informações que podem te ajudar no dia a dia para resolver diversos problemas, desde formatar um computador, até ver quem não te segue de volta no Instagram.
+                </div>
+            </div>
 
-
-            <font color="#2BFF00">- Automatizar tarefas chatas que te deixam de cabelo em pé</font><br>
-            <font color="#2BFF00">- Otimizar seu workflow e dar um gás na sua produtividade</font><br>
-            <font color="#2BFF00">- Se tornar um ninja da programação, mesmo sem ser expert</font>
-
-
-            Então, bora dar um up na sua vida???<br>
-
-            Navegue pelas categorias, explore os scripts e mande ver!
         </div>
-
-        <div class="redes">
-            <button class="insta">
-                <img src="instagram-logo.png" alt="">
-            </button>
-            <button class="discord">
-                <img src="discord-logo.png" alt="">
-            </button>
-            <button class="twitter">
-                <img src="x-logo.png" alt="">
-            </button>
-        </div>
-
-
-
-
     </div>
+
     <footer>
-        <div class="texto-footer"> by: @jaum_15.02</div>
+        <div class="texto-footer">by: @jaum_15.02</div>
     </footer>
-
-
 </body>
-
 </html>
