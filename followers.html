@@ -24,7 +24,6 @@
             flex-direction: column;
         }
 
-        /* Fundo */
         .background-image {
             position: fixed;
             top: 0;
@@ -38,7 +37,6 @@
             z-index: -1;
         }
 
-        /* Header (Menu) - Branco Puro */
         header {
             background-color: rgba(0, 0, 0, 0.8);
             padding: 15px 50px;
@@ -80,7 +78,6 @@
             color: #ff4d4d;
         }
 
-        /* Container Central */
         .container-principal {
             flex: 1;
             display: flex;
@@ -151,12 +148,11 @@
             list-style: none;
         }
 
-        /* --- CORREÇÃO DO BUG DE ESPAÇAMENTO --- */
         .instrucoes-lista li {
             margin-bottom: 18px;
             font-size: 17px;
-            display: flex; /* Mantém o número ao lado do texto */
-            align-items: flex-start; /* Alinha no topo caso o texto quebre linha */
+            display: flex;
+            align-items: flex-start;
             color: #ffffff;
             text-shadow: 0 1px 3px rgba(0,0,0,0.8);
         }
@@ -170,14 +166,13 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-right: 15px; /* Espaço entre a bolinha e o texto */
+            margin-right: 15px;
             font-size: 14px;
             font-weight: bold;
-            flex-shrink: 0; /* Impede a bolinha de amassar */
-            margin-top: 2px; /* Ajuste fino vertical */
+            flex-shrink: 0;
+            margin-top: 2px;
         }
 
-        /* Classe nova para garantir que o texto flua normalmente */
         .text-content {
             flex: 1;
             line-height: 1.5;
@@ -187,7 +182,6 @@
             color: #ff4d4d;
             font-weight: 700;
         }
-        /* -------------------------------------- */
 
         footer {
             background-color: rgba(0, 0, 0, 0.8);
