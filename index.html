@@ -89,7 +89,7 @@
             padding: 20px;
         }
 
-        /* CARD Ajustado (Tamanho controlado) */
+        /* CARD Ajustado */
         .explicacao {
             background: rgba(255, 255, 255, 0.07);
             backdrop-filter: blur(15px);
@@ -99,7 +99,7 @@
             padding: 50px;
             display: flex;
             align-items: center;
-            max-width: 950px; /* Levemente mais largo para caber os botões maiores */
+            max-width: 950px;
             width: 100%;
             box-shadow: 0 25px 55px rgba(0, 0, 0, 0.65);
             min-height: 450px;
@@ -110,16 +110,17 @@
             flex: 0 0 200px;
             display: flex;
             flex-direction: column;
-            gap: 25px; /* Espaço aumentado entre botões */
+            gap: 25px;
             align-items: center;
             justify-content: center;
             border-right: 2px solid rgba(255,255,255,0.1);
             padding-right: 30px;
         }
 
+        /* Estilo dos Botões (Agora são Links <a>) */
         .social-btn {
-            width: 85px;  /* Aumentei de 60px para 85px (Meio termo) */
-            height: 85px;
+            width: 100px;
+            height: 100px;
             border-radius: 20px;
             border: none;
             cursor: pointer;
@@ -131,11 +132,12 @@
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(5px);
             border: 1px solid rgba(255,255,255,0.2);
+            text-decoration: none; /* Remove sublinhado de link */
         }
 
         .social-btn img {
-            width: 45px; /* Ícone interno maior */
-            height: 45px;
+            width: 60px;
+            height: 60px;
             filter: drop-shadow(0 2px 3px rgba(0,0,0,0.3));
         }
 
@@ -163,7 +165,7 @@
 
         .texto h1 {
             font-family: 'Righteous', sans-serif;
-            font-size: 55px; /* Aumentei de 42px para 55px (Destaque sem exagero) */
+            font-size: 55px;
             margin-bottom: 20px;
             color: #ffffff;
             text-shadow: 0 3px 8px rgba(0,0,0,0.6);
@@ -172,7 +174,7 @@
         }
 
         .ola {
-            font-size: 22px; /* Aumentei de 19px para 22px */
+            font-size: 25px;
             line-height: 1.5;
             color: #ffffff;
             text-shadow: 0 2px 4px rgba(0,0,0,0.9);
@@ -234,21 +236,21 @@
         <div class="explicacao">
             
             <div class="social-side">
-                <button class="social-btn insta" title="Instagram">
+                <a href="https://www.instagram.com/jaum_15.02/" target="_blank" class="social-btn insta" title="Instagram">
                     <img src="instagram-logo.png" alt="Instagram">
-                </button>
-                <button class="social-btn discord" title="Discord">
+                </a>
+                <a href="https://discord.gg/EPbHjperMT" target="_blank" class="social-btn discord" title="Discord">
                     <img src="discord-logo.png" alt="Discord">
-                </button>
-                <button class="social-btn twitter" title="X / Twitter">
+                </a>
+                <a href="https://x.com/jaum_1502" target="_blank" class="social-btn twitter" title="X / Twitter">
                     <img src="x-logo.png" alt="X">
-                </button>
+                </a>
             </div>
 
             <div class="texto">
                 <h1>INÍCIO</h1>
                 <div class="ola">
-                    Site do balacobaco. Esse site tem algumas ferramentas e informações que podem te ajudar no dia a dia para resolver diversos problemas, desde formatar um computador, até ver quem não te segue de volta no Instagram.
+                    Site do balacobaco!!!!<br>   Esse site tem algumas ferramentas e informações que podem te ajudar no dia a dia para resolver diversos problemas, desde formatar um computador, até ver quem não te segue de volta no Instagram.
                 </div>
             </div>
 
