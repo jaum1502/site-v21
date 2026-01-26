@@ -4,19 +4,229 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>seiosSHOP</title>
-    <link rel="stylesheet   " type="text/css" href="folhadeestilo.css">
+    <title>arqsEXE | Unfollowers</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;500;700&family=Righteous&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Kanit", sans-serif;
+            background-color: #000;
+            color: white;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Fundo */
+        .background-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('background5.jpg');
+            background-size: cover;
+            background-position: center;
+            filter: blur(8px) brightness(0.9);
+            z-index: -1;
+        }
+
+        /* Header (Menu) - Branco Puro */
+        header {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 15px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .logo a {
+            color: #ffffff;
+            font-family: "Righteous", sans-serif;
+            font-size: 28px;
+            text-decoration: none;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .logo a:hover {
+            color: #2bff00;
+            text-shadow: 0 0 10px #2bff00;
+        }
+
+        .menu ul {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+        }
+
+        .menu ul li a {
+            text-decoration: none;
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: 500;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+            transition: 0.3s;
+        }
+
+        .menu ul li a:hover {
+            color: #ff4d4d;
+        }
+
+        /* Container Central */
+        .container-principal {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .explicacao {
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 25px;
+            padding: 40px;
+            display: flex;
+            align-items: center;
+            max-width: 850px;
+            width: 100%;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+        }
+
+        .botao-container {
+            flex: 0 0 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .copy-button {
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            border: none;
+            border-radius: 22%;
+            width: 170px;
+            height: 170px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        .copy-button:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 0 30px rgba(220, 39, 67, 0.5);
+        }
+
+        .copy-button img {
+            width: 70px;
+            height: 70px;
+        }
+
+        .texto {
+            margin-left: 50px;
+            flex: 1;
+        }
+
+        .texto h1 {
+            font-family: 'Righteous', sans-serif;
+            font-size: 32px;
+            margin-bottom: 25px;
+            color: #ffffff;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        }
+
+        .instrucoes-lista {
+            list-style: none;
+        }
+
+        /* --- CORREÇÃO DO BUG DE ESPAÇAMENTO --- */
+        .instrucoes-lista li {
+            margin-bottom: 18px;
+            font-size: 17px;
+            display: flex; /* Mantém o número ao lado do texto */
+            align-items: flex-start; /* Alinha no topo caso o texto quebre linha */
+            color: #ffffff;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+        }
+
+        .step-num {
+            background: #ff4d4d;
+            color: white;
+            min-width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px; /* Espaço entre a bolinha e o texto */
+            font-size: 14px;
+            font-weight: bold;
+            flex-shrink: 0; /* Impede a bolinha de amassar */
+            margin-top: 2px; /* Ajuste fino vertical */
+        }
+
+        /* Classe nova para garantir que o texto flua normalmente */
+        .text-content {
+            flex: 1;
+            line-height: 1.5;
+        }
+
+        b {
+            color: #ff4d4d;
+            font-weight: 700;
+        }
+        /* -------------------------------------- */
+
+        footer {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 10px 20px;
+            text-align: left;
+            font-size: 14px;
+            color: #ffffff;
+            font-weight: 500;
+        }
+
+        .textolamento { display: none; }
+
+        @media only screen and (max-width: 735px) {
+            header, .container-principal, footer { display: none; }
+            body { background-color: #000; display: block; }
+            .textolamento {
+                display: flex;
+                height: 100vh;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                padding: 40px;
+                font-size: 24px;
+            }
+        }
+    </style>
 </head>
 
-<body bgcolor="black">
+<body>
     <div class="background-image"></div>
+    
     <p class="textolamento">
-        ESSE SITE FOI FEITO APENAS PARA COMPUTADORES...<BR><BR>
+        ESSE SITE FOI FEITO APENAS PARA COMPUTADORES...<br><br>
         OBRIGADO PELA COMPREENSÃO.
     </p>
+
     <header>
         <div class="logo">
-            <a href="" class="href">arqsEXE</a>
+            <a href="index.html">arqsEXE</a>
         </div>
         <nav class="menu">
             <ul>
@@ -27,42 +237,47 @@
             </ul>
         </nav>
     </header>
-    <footer>
-        <div class="texto-footer"> by: @jaum_15.02</div>
-    </footer>
+
     <div class="container-principal">
-
         <div class="explicacao">
-
-            <div class="botao">
-
+            <div class="botao-container">
                 <button class="copy-button" onclick="copyToClipboard()">
-                    <img src="instagram-logo.png" alt="" width="125px" height="125px">
+                    <img src="instagram-logo.png" alt="Insta">
                 </button>
-                <div class="texto">
-                    <h1>Followers and Unfollowers</h1><br>
-                    <h4>Para utilizar esse código:<br>
-                        1. Aperte no botão à esquerda;
-                        <br>
-                        2.Aperte F12, ou aperte com o botão direito e aperte em inspecionar;
-                        <br>
-                        3. Digite "permitir colar" ou "allow pasting";
-                        <br>
-                        4. Aperte enter;
-                        <br>
-                        5. Aperte RUN.
-                    </h4><br>
-                </div>
+            </div>
+
+            <div class="texto">
+                <h1>Followers and Unfollowers</h1>
+                <ul class="instrucoes-lista">
+                    <li>
+                        <span class="step-num">1</span>
+                        <span class="text-content">Clique no botão ao lado para copiar o script.</span>
+                    </li>
+                    <li>
+                        <span class="step-num">2</span>
+                        <span class="text-content">Aperte <b>F12</b> ou clique com o botão direito e escolha <b>Inspecionar</b>.</span>
+                    </li>
+                    <li>
+                        <span class="step-num">3</span>
+                        <span class="text-content">No console, digite <b>"allow pasting"</b> e aperte Enter.</span>
+                    </li>
+                    <li>
+                        <span class="step-num">4</span>
+                        <span class="text-content">Cole o código (Ctrl + V) e aperte <b>Enter</b>.</span>
+                    </li>
+                    <li>
+                        <span class="step-num">5</span>
+                        <span class="text-content">Clique no botão <b>RUN</b> que aparecerá na tela.</span>
+                    </li>
+                </ul>
             </div>
         </div>
-<video src="gra"></video>
-
-        <script src="copiar.js"></script>
     </div>
 
+    <footer>
+        <div class="texto-footer">by: @jaum_15.02</div>
+    </footer>
 
-
-
+    <script src="copiar.js"></script>
 </body>
-
 </html>
