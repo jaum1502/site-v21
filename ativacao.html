@@ -19,13 +19,11 @@
             background-color: #000;
             color: white;
             overflow: hidden;
-            /* O SITE não rola, só o painel */
             height: 100vh;
             display: flex;
             flex-direction: column;
         }
 
-        /* Fundo */
         .background-image {
             position: fixed;
             top: 0;
@@ -39,7 +37,28 @@
             z-index: -1;
         }
 
-        /* Header */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            border: 2px solid transparent;
+            background-clip: content-box;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.4);
+            border: 2px solid transparent;
+            background-clip: content-box;
+        }
+
         header {
             background-color: rgba(0, 0, 0, 0.85);
             padding: 15px 50px;
@@ -49,7 +68,6 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             z-index: 100;
             flex-shrink: 0;
-            /* Impede o header de encolher */
         }
 
         .logo a {
@@ -84,7 +102,6 @@
             color: #ff4d4d;
         }
 
-        /* --- BARRA DE PESQUISA --- */
         .search-wrapper {
             width: 100%;
             max-width: 900px;
@@ -125,55 +142,27 @@
             pointer-events: none;
         }
 
-        /* --- NOVO CONTAINER PRINCIPAL (PAINEL DE ROLAGEM) --- */
         .scroll-panel-container {
             flex: 1;
-            /* Ocupa o resto da tela */
             width: 100%;
             max-width: 900px;
             margin: 10px auto;
             padding: 0 20px;
             overflow: hidden;
-            /* Esconde o que sai da caixa */
             position: relative;
             display: flex;
             flex-direction: column;
         }
 
-        /* A "Caixa de Vidro" onde os itens rolam */
         .forum-list {
             flex: 1;
             overflow-y: auto;
-            /* Rolagem vertical aqui dentro */
-            padding-right: 10px;
-            /* Espaço para a barra de rolagem */
+            padding-right: 5px;
             padding-bottom: 20px;
-            /* Máscara para suavizar o final da lista (fade out) */
             mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
             -webkit-mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
         }
 
-        /* ESTILO DA BARRA DE ROLAGEM (Scrollbar Mac/Moderno) */
-        .forum-list::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        .forum-list::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-        }
-
-        .forum-list::-webkit-scrollbar-thumb {
-            background: rgba(255, 77, 77, 0.5);
-            /* Vermelho translúcido */
-            border-radius: 10px;
-        }
-
-        .forum-list::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 77, 77, 0.8);
-        }
-
-        /* --- CARDS DA LISTA COM ANIMAÇÃO --- */
         .topic-card {
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(5px);
@@ -187,29 +176,17 @@
             position: relative;
             overflow: hidden;
             margin-bottom: 15px;
-            /* Margem movida para o item */
-
-            /* PROPRIEDADES DE TRANSIÇÃO SUAVE */
             opacity: 1;
             max-height: 100px;
-            /* Altura máxima estimada */
             transform: scale(1);
-            transition:
-                opacity 0.4s ease,
-                max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1),
-                margin 0.4s ease,
-                padding 0.4s ease,
-                transform 0.3s ease,
-                background 0.3s, border 0.3s, box-shadow 0.3s;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
-        /* Classe que esconde o card suavemente */
         .topic-card.filtered-out {
             opacity: 0;
             max-height: 0;
             margin-bottom: 0;
-            padding-top: 0;
-            padding-bottom: 0;
+            padding: 0 25px;
             border: none;
             pointer-events: none;
             transform: scale(0.9);
@@ -250,6 +227,10 @@
             color: white;
             font-family: "Righteous", sans-serif;
             letter-spacing: 0.5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 600px;
         }
 
         .card-date {
@@ -269,8 +250,6 @@
             transform: translateX(5px);
         }
 
-
-        /* --- MODAL --- */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -293,7 +272,7 @@
         }
 
         .modal-box {
-            background: rgba(20, 20, 20, 0.75);
+            background: rgba(20, 20, 20, 0.85);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -307,7 +286,6 @@
             transition: transform 0.3s;
             overflow: hidden;
             max-height: 85vh;
-            /* Modal nunca passa da tela */
         }
 
         .modal-active .modal-box {
@@ -320,6 +298,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-shrink: 0;
         }
 
         .modal-title {
@@ -328,6 +307,7 @@
             color: white;
             margin: 0;
             text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            word-break: break-word;
         }
 
         .close-icon {
@@ -392,6 +372,7 @@
             display: flex;
             justify-content: flex-end;
             gap: 10px;
+            flex-shrink: 0;
         }
 
         .btn {
@@ -432,6 +413,8 @@
             line-height: 1.6;
             color: #ddd;
             white-space: pre-wrap;
+            word-break: break-word;
+            overflow-wrap: break-word;
         }
 
         .view-meta {
@@ -463,7 +446,7 @@
             align-items: center;
             cursor: pointer;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            transition: transform 0.3s, box-shadow 0.3s;
+            transition: transform 0.3s;
             z-index: 200;
         }
 
@@ -504,6 +487,8 @@
             .forum-list {
                 overflow: visible;
                 padding-right: 0;
+                mask-image: none;
+                -webkit-mask-image: none;
             }
         }
     </style>
@@ -517,8 +502,7 @@
         <nav class="menu">
             <ul>
                 <li><a href="index.html">Início</a></li>
-
-                <li><a href="ativacao.html">Fórum</a></li>
+                <li><a href="ativacao.html">Ativação</a></li>
                 <li><a href="followers.html">Unfollowers</a></li>
             </ul>
         </nav>
@@ -585,7 +569,6 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-        // CONFIGURAÇÃO
         const firebaseConfig = {
             apiKey: "AIzaSyDMEd7LnttNLkXnbhW3s1Bt_UwT6iIgc8c",
             authDomain: "arqsexe-forum-3d55b.firebaseapp.com",
@@ -600,7 +583,6 @@
         const db = getDatabase(app);
         const topicsRef = ref(db, 'topicos');
 
-        // --- FILTRO SUAVE (ANIMAÇÃO) ---
         const searchInput = document.getElementById('searchInput');
 
         searchInput.addEventListener('input', (e) => {
@@ -612,10 +594,8 @@
                 const date = card.querySelector('.card-date').innerText.toLowerCase();
 
                 if (title.includes(searchTerm) || date.includes(searchTerm)) {
-                    // SE ENCONTRAR: Remove a classe que esconde
                     card.classList.remove('filtered-out');
                 } else {
-                    // SE NÃO ENCONTRAR: Adiciona a classe que anima o colapso
                     card.classList.add('filtered-out');
                 }
             });
@@ -656,7 +636,7 @@
                 const listaTopicos = Object.entries(data);
                 listaTopicos.reverse().forEach(([id, topic]) => {
                     const card = document.createElement('div');
-                    card.className = 'topic-card'; // Classe base
+                    card.className = 'topic-card';
                     card.innerHTML = `
                         <div class="card-info">
                             <span class="card-title">${topic.title}</span>
@@ -668,16 +648,12 @@
                     container.appendChild(card);
                 });
 
-                // Re-aplica filtro se tiver texto na busca
-                if (searchInput.value) {
-                    searchInput.dispatchEvent(new Event('input'));
-                }
+                if (searchInput.value) searchInput.dispatchEvent(new Event('input'));
             } else {
                 container.innerHTML = '<p style="text-align:center; color:#777; margin-top:50px;">Nenhum tópico criado.</p>';
             }
         });
 
-        // MODAIS
         window.openCreateModal = function () {
             const modal = document.getElementById('createModal');
             modal.style.display = 'flex';
