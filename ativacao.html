@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>arqsEXE | Fórum</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;500;700&family=Righteous&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&family=Righteous&display=swap');
 
         * {
             margin: 0;
@@ -18,8 +18,9 @@
             font-family: "Kanit", sans-serif;
             background-color: #000;
             color: white;
-            overflow-x: hidden;
-            min-height: 100vh;
+            overflow: hidden;
+            /* O SITE não rola, só o painel */
+            height: 100vh;
             display: flex;
             flex-direction: column;
         }
@@ -34,21 +35,21 @@
             background-image: url('background5.jpg');
             background-size: cover;
             background-position: center;
-            filter: blur(8px) brightness(0.7);
+            filter: blur(8px) brightness(0.8);
             z-index: -1;
         }
 
         /* Header */
         header {
-            background-color: rgba(0, 0, 0, 0.8);
+            background-color: rgba(0, 0, 0, 0.85);
             padding: 15px 50px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            position: sticky;
-            top: 0;
             z-index: 100;
+            flex-shrink: 0;
+            /* Impede o header de encolher */
         }
 
         .logo a {
@@ -83,125 +84,207 @@
             color: #ff4d4d;
         }
 
-        /* Container do Fórum */
-        .forum-container {
-            flex: 1;
+        /* --- BARRA DE PESQUISA --- */
+        .search-wrapper {
             width: 100%;
             max-width: 900px;
-            margin: 50px auto;
+            margin: 30px auto 10px auto;
             padding: 0 20px;
+            z-index: 10;
+            flex-shrink: 0;
+        }
+
+        .search-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 15px 50px 15px 25px;
+            border-radius: 30px;
+            color: white;
+            font-family: "Kanit", sans-serif;
+            font-size: 16px;
+            outline: none;
+            backdrop-filter: blur(10px);
+            transition: 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .search-input:focus {
+            border-color: #ff4d4d;
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 20px rgba(255, 77, 77, 0.3);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 40px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 18px;
+            color: #aaa;
+            pointer-events: none;
+        }
+
+        /* --- NOVO CONTAINER PRINCIPAL (PAINEL DE ROLAGEM) --- */
+        .scroll-panel-container {
+            flex: 1;
+            /* Ocupa o resto da tela */
+            width: 100%;
+            max-width: 900px;
+            margin: 10px auto;
+            padding: 0 20px;
+            overflow: hidden;
+            /* Esconde o que sai da caixa */
+            position: relative;
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            padding-bottom: 100px;
         }
 
-        /* Tópico */
-        .topic {
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 15px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        /* A "Caixa de Vidro" onde os itens rolam */
+        .forum-list {
+            flex: 1;
+            overflow-y: auto;
+            /* Rolagem vertical aqui dentro */
+            padding-right: 10px;
+            /* Espaço para a barra de rolagem */
+            padding-bottom: 20px;
+            /* Máscara para suavizar o final da lista (fade out) */
+            mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 90%, transparent 100%);
         }
 
-        .topic:hover {
-            border-color: rgba(255, 255, 255, 0.4);
-            transform: translateY(-2px);
+        /* ESTILO DA BARRA DE ROLAGEM (Scrollbar Mac/Moderno) */
+        .forum-list::-webkit-scrollbar {
+            width: 6px;
         }
 
-        .topic-header {
+        .forum-list::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+        }
+
+        .forum-list::-webkit-scrollbar-thumb {
+            background: rgba(255, 77, 77, 0.5);
+            /* Vermelho translúcido */
+            border-radius: 10px;
+        }
+
+        .forum-list::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 77, 77, 0.8);
+        }
+
+        /* --- CARDS DA LISTA COM ANIMAÇÃO --- */
+        .topic-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
             padding: 20px 25px;
             cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: rgba(255, 255, 255, 0.03);
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 15px;
+            /* Margem movida para o item */
+
+            /* PROPRIEDADES DE TRANSIÇÃO SUAVE */
+            opacity: 1;
+            max-height: 100px;
+            /* Altura máxima estimada */
+            transform: scale(1);
+            transition:
+                opacity 0.4s ease,
+                max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                margin 0.4s ease,
+                padding 0.4s ease,
+                transform 0.3s ease,
+                background 0.3s, border 0.3s, box-shadow 0.3s;
         }
 
-        .topic-title {
-            font-size: 20px;
+        /* Classe que esconde o card suavemente */
+        .topic-card.filtered-out {
+            opacity: 0;
+            max-height: 0;
+            margin-bottom: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+            border: none;
+            pointer-events: none;
+            transform: scale(0.9);
+        }
+
+        .topic-card:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px) scale(1.01);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .topic-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: #ff4d4d;
+            opacity: 0;
+            transition: 0.3s;
+        }
+
+        .topic-card:hover::before {
+            opacity: 1;
+        }
+
+        .card-info {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .card-title {
+            font-size: 18px;
             font-weight: 500;
             color: white;
-            text-transform: uppercase;
             font-family: "Righteous", sans-serif;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
         }
 
-        .topic-icon {
-            font-size: 24px;
+        .card-date {
+            font-size: 12px;
+            color: #aaa;
+            font-weight: 300;
+        }
+
+        .card-arrow {
+            font-size: 20px;
+            color: #555;
+            transition: 0.3s;
+        }
+
+        .topic-card:hover .card-arrow {
             color: #ff4d4d;
-            transition: transform 0.3s ease;
+            transform: translateX(5px);
         }
 
-        .topic-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s ease-out;
-            background: rgba(0, 0, 0, 0.2);
-        }
 
-        .topic-body {
-            padding: 25px;
-            font-size: 16px;
-            line-height: 1.6;
-            color: #ddd;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            white-space: pre-wrap;
-        }
-
-        .topic.active .topic-content {
-            max-height: 2000px;
-        }
-
-        .topic.active .topic-icon {
-            transform: rotate(45deg);
-            color: #ffffff;
-        }
-
-        /* FAB Button */
-        .fab-btn {
-            position: fixed;
-            bottom: 40px;
-            right: 40px;
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            background: linear-gradient(45deg, #ff4d4d, #b30000);
-            border: none;
-            color: white;
-            font-size: 40px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            box-shadow: 0 10px 25px rgba(255, 77, 77, 0.4);
-            transition: transform 0.3s, box-shadow 0.3s;
-            z-index: 200;
-        }
-
-        .fab-btn:hover {
-            transform: scale(1.1) rotate(90deg);
-            box-shadow: 0 0 30px rgba(255, 77, 77, 0.8);
-        }
-
-        /* Modal */
+        /* --- MODAL --- */
         .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(5px);
-            z-index: 300;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
             display: none;
             justify-content: center;
             align-items: center;
             opacity: 0;
-            transition: opacity 0.3s;
+            transition: opacity 0.3s ease;
         }
 
         .modal-active {
@@ -210,54 +293,91 @@
         }
 
         .modal-box {
-            background: rgba(20, 20, 20, 0.95);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 30px;
+            background: rgba(20, 20, 20, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 20px;
             width: 90%;
             max-width: 600px;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
-            transform: scale(0.8);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            transform: scale(0.9);
             transition: transform 0.3s;
+            overflow: hidden;
+            max-height: 85vh;
+            /* Modal nunca passa da tela */
         }
 
         .modal-active .modal-box {
             transform: scale(1);
         }
 
+        .modal-header {
+            padding: 20px 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
         .modal-title {
             font-family: "Righteous", sans-serif;
-            font-size: 24px;
-            margin-bottom: 20px;
+            font-size: 22px;
             color: white;
-            text-align: center;
+            margin: 0;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .close-icon {
+            cursor: pointer;
+            color: #aaa;
+            font-size: 20px;
+            transition: 0.2s;
+        }
+
+        .close-icon:hover {
+            color: white;
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            padding: 30px;
+            overflow-y: auto;
         }
 
         .input-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         .input-group label {
             display: block;
-            margin-bottom: 5px;
-            color: #aaa;
-            font-size: 14px;
+            margin-bottom: 8px;
+            color: #ff4d4d;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .custom-input {
             width: 100%;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            border-radius: 10px;
+            padding: 12px 15px;
+            border-radius: 8px;
             color: white;
             font-family: "Kanit", sans-serif;
             font-size: 16px;
             outline: none;
+            transition: 0.3s;
         }
 
         .custom-input:focus {
             border-color: #ff4d4d;
+            background: rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 10px rgba(255, 77, 77, 0.2);
         }
 
         textarea.custom-input {
@@ -265,115 +385,194 @@
             min-height: 150px;
         }
 
-        .modal-buttons {
+        .modal-footer {
+            padding: 20px 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(0, 0, 0, 0.2);
             display: flex;
-            gap: 10px;
-            margin-top: 20px;
             justify-content: flex-end;
+            gap: 10px;
         }
 
         .btn {
-            padding: 10px 25px;
+            padding: 10px 20px;
             border-radius: 8px;
             border: none;
             font-family: "Kanit", sans-serif;
-            font-weight: bold;
+            font-weight: 500;
             cursor: pointer;
             transition: 0.2s;
+            font-size: 14px;
         }
 
         .btn-cancel {
             background: transparent;
             color: #aaa;
-            border: 1px solid rgba(255,255,255,0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .btn-cancel:hover {
-            background: rgba(255,255,255,0.1);
             color: white;
+            border-color: white;
         }
 
         .btn-save {
-            background: #ff4d4d;
+            background: linear-gradient(45deg, #ff4d4d, #b30000);
             color: white;
+            box-shadow: 0 4px 10px rgba(255, 77, 77, 0.3);
         }
 
         .btn-save:hover {
-            background: #d42e2e;
-            box-shadow: 0 0 15px rgba(255, 77, 77, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(255, 77, 77, 0.5);
         }
 
-        .delete-btn {
-            background: transparent;
-            border: none;
-            color: #555;
-            font-size: 14px;
-            cursor: pointer;
-            margin-top: 20px;
-            text-align: right;
-            display: block;
-            width: 100%;
+        .view-content {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #ddd;
+            white-space: pre-wrap;
         }
-        .delete-btn:hover {
-            color: red;
-            text-decoration: underline;
+
+        .view-meta {
+            font-size: 12px;
+            color: #666;
+            margin-right: auto;
+        }
+
+        .topic-id-display {
+            font-size: 10px;
+            color: #444;
+            margin-top: 5px;
+            user-select: text;
+        }
+
+        .fab-btn {
+            position: fixed;
+            bottom: 80px;
+            right: 40px;
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #ff4d4d, #b30000);
+            border: none;
+            color: white;
+            font-size: 35px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s, box-shadow 0.3s;
+            z-index: 200;
+        }
+
+        .fab-btn:hover {
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: 0 0 40px rgba(255, 77, 77, 0.6);
         }
 
         footer {
-            background-color: rgba(0, 0, 0, 0.8);
+            background-color: rgba(0, 0, 0, 0.85);
             padding: 10px 20px;
             text-align: left;
             font-size: 14px;
             color: #ffffff;
             font-weight: 500;
             margin-top: auto;
+            flex-shrink: 0;
         }
 
         @media only screen and (max-width: 735px) {
-            header, footer { display: none; }
-            body { padding: 0; }
-            .forum-container { padding-top: 20px; }
-            .modal-box { width: 95%; padding: 20px; }
+
+            header,
+            footer {
+                display: none;
+            }
+
+            body {
+                padding: 0;
+                overflow: auto;
+                height: auto;
+            }
+
+            .scroll-panel-container {
+                overflow: visible;
+                padding-bottom: 80px;
+            }
+
+            .forum-list {
+                overflow: visible;
+                padding-right: 0;
+            }
         }
     </style>
 </head>
 
 <body>
     <div class="background-image"></div>
-    
+
     <header>
-        <div class="logo">
-            <a href="index.html">arqsEXE</a>
-        </div>
+        <div class="logo"><a href="index.html">arqsEXE</a></div>
         <nav class="menu">
             <ul>
                 <li><a href="index.html">Início</a></li>
-                <li><a href="arqsJAVA.html">arqsJAVA</a></li>
-                <li><a href="ativacao.html">Ativação</a></li>
+
+                <li><a href="ativacao.html">Fórum</a></li>
                 <li><a href="followers.html">Unfollowers</a></li>
             </ul>
         </nav>
     </header>
 
-    <div class="forum-container" id="forumContainer">
+    <div class="search-wrapper">
+        <div style="position: relative;">
+            <input type="text" id="searchInput" class="search-input" placeholder="Pesquisar tópico...">
+            <span class="search-icon">🔍</span>
         </div>
+    </div>
 
-    <button class="fab-btn" onclick="openModal()">+</button>
+    <div class="scroll-panel-container">
+        <div class="forum-list" id="forumContainer">
+        </div>
+    </div>
 
-    <div class="modal-overlay" id="topicModal">
+    <button class="fab-btn" onclick="openCreateModal()">+</button>
+
+    <div class="modal-overlay" id="createModal">
         <div class="modal-box">
-            <h2 class="modal-title">Novo Tópico</h2>
-            <div class="input-group">
-                <label>Título do Tópico</label>
-                <input type="text" id="topicTitle" class="custom-input" placeholder="Ex: Erro ao formatar...">
+            <div class="modal-header">
+                <h2 class="modal-title">Novo Tópico</h2>
+                <span class="close-icon" onclick="closeCreateModal()">&#10005;</span>
             </div>
-            <div class="input-group">
-                <label>Conteúdo</label>
-                <textarea id="topicBody" class="custom-input" placeholder="Descreva aqui..."></textarea>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label>Título</label>
+                    <input type="text" id="topicTitle" class="custom-input" placeholder="Sobre o que você quer falar?">
+                </div>
+                <div class="input-group">
+                    <label>Conteúdo</label>
+                    <textarea id="topicBody" class="custom-input" placeholder="Digite os detalhes aqui..."></textarea>
+                </div>
             </div>
-            <div class="modal-buttons">
-                <button class="btn btn-cancel" onclick="closeModal()">Cancelar</button>
-                <button class="btn btn-save" id="saveBtn">Salvar Tópico</button>
+            <div class="modal-footer">
+                <button class="btn btn-cancel" onclick="closeCreateModal()">Cancelar</button>
+                <button class="btn btn-save" id="saveBtn">Publicar</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="viewModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h2 class="modal-title" id="viewTitle">Título do Tópico</h2>
+                <span class="close-icon" onclick="closeViewModal()">&#10005;</span>
+            </div>
+            <div class="modal-body">
+                <div id="viewBody" class="view-content"></div>
+                <div id="viewId" class="topic-id-display"></div>
+            </div>
+            <div class="modal-footer">
+                <span class="view-meta" id="viewDate">Data</span>
             </div>
         </div>
     </div>
@@ -386,7 +585,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-        // SUA CONFIGURAÇÃO COMPLETA (JÁ COM A CORREÇÃO DO DATABASE URL)
+        // CONFIGURAÇÃO
         const firebaseConfig = {
             apiKey: "AIzaSyDMEd7LnttNLkXnbhW3s1Bt_UwT6iIgc8c",
             authDomain: "arqsexe-forum-3d55b.firebaseapp.com",
@@ -394,21 +593,48 @@
             storageBucket: "arqsexe-forum-3d55b.firebasestorage.app",
             messagingSenderId: "819536464586",
             appId: "1:819536464586:web:e05d81716493953b204233",
-            databaseURL: "https://arqsexe-forum-3d55b-default-rtdb.firebaseio.com" 
+            databaseURL: "https://arqsexe-forum-3d55b-default-rtdb.firebaseio.com/"
         };
 
-        // Inicia o App
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
         const topicsRef = ref(db, 'topicos');
 
-        // Botão Salvar
+        // --- FILTRO SUAVE (ANIMAÇÃO) ---
+        const searchInput = document.getElementById('searchInput');
+
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const cards = document.querySelectorAll('.topic-card');
+
+            cards.forEach(card => {
+                const title = card.querySelector('.card-title').innerText.toLowerCase();
+                const date = card.querySelector('.card-date').innerText.toLowerCase();
+
+                if (title.includes(searchTerm) || date.includes(searchTerm)) {
+                    // SE ENCONTRAR: Remove a classe que esconde
+                    card.classList.remove('filtered-out');
+                } else {
+                    // SE NÃO ENCONTRAR: Adiciona a classe que anima o colapso
+                    card.classList.add('filtered-out');
+                }
+            });
+        });
+
+        window.adminDelete = function (id) {
+            remove(ref(db, 'topicos/' + id))
+                .then(() => {
+                    console.log(`%c Tópico ${id} apagado!`, 'color: #00ff00');
+                    closeViewModal();
+                });
+        }
+
         document.getElementById('saveBtn').addEventListener('click', () => {
             const title = document.getElementById('topicTitle').value;
             const body = document.getElementById('topicBody').value;
 
             if (title.trim() === '' || body.trim() === '') {
-                alert('Preencha título e conteúdo!');
+                alert('Escreva algo antes de salvar!');
                 return;
             }
 
@@ -418,67 +644,49 @@
                 date: new Date().toLocaleDateString('pt-BR')
             });
 
-            closeModal();
+            closeCreateModal();
         });
 
-        // Carregar Tópicos em Tempo Real
         onValue(topicsRef, (snapshot) => {
             const container = document.getElementById('forumContainer');
-            container.innerHTML = ''; 
-            
+            container.innerHTML = '';
             const data = snapshot.val();
-            
+
             if (data) {
                 const listaTopicos = Object.entries(data);
                 listaTopicos.reverse().forEach(([id, topic]) => {
-                    createTopicElement(id, topic);
+                    const card = document.createElement('div');
+                    card.className = 'topic-card'; // Classe base
+                    card.innerHTML = `
+                        <div class="card-info">
+                            <span class="card-title">${topic.title}</span>
+                            <span class="card-date">${topic.date}</span>
+                        </div>
+                        <span class="card-arrow">&#10140;</span>
+                    `;
+                    card.addEventListener('click', () => openViewModal(id, topic));
+                    container.appendChild(card);
                 });
+
+                // Re-aplica filtro se tiver texto na busca
+                if (searchInput.value) {
+                    searchInput.dispatchEvent(new Event('input'));
+                }
             } else {
-                container.innerHTML = '<p style="text-align:center; color:#777; margin-top:50px; font-size:18px;">Nenhum tópico ainda. Seja o primeiro a criar!</p>';
+                container.innerHTML = '<p style="text-align:center; color:#777; margin-top:50px;">Nenhum tópico criado.</p>';
             }
         });
 
-        function createTopicElement(id, topic) {
-            const container = document.getElementById('forumContainer');
-            const div = document.createElement('div');
-            div.className = 'topic';
-            div.id = id; 
-            div.innerHTML = `
-                <div class="topic-header">
-                    <span class="topic-title">${topic.title}</span>
-                    <span class="topic-icon">+</span>
-                </div>
-                <div class="topic-content">
-                    <div class="topic-body">
-                        ${topic.body}
-                        <button class="delete-btn" data-id="${id}">Excluir este tópico</button>
-                    </div>
-                </div>
-            `;
-            
-            div.querySelector('.topic-header').addEventListener('click', () => {
-                div.classList.toggle('active');
-            });
-
-            div.querySelector('.delete-btn').addEventListener('click', () => {
-                if(confirm('Tem certeza que deseja apagar este tópico para sempre?')) {
-                    remove(ref(db, 'topicos/' + id));
-                }
-            });
-
-            container.appendChild(div);
-        }
-
-        // Funções do Modal
-        window.openModal = function() {
-            const modal = document.getElementById('topicModal');
+        // MODAIS
+        window.openCreateModal = function () {
+            const modal = document.getElementById('createModal');
             modal.style.display = 'flex';
             setTimeout(() => modal.classList.add('modal-active'), 10);
             document.getElementById('topicTitle').focus();
         }
 
-        window.closeModal = function() {
-            const modal = document.getElementById('topicModal');
+        window.closeCreateModal = function () {
+            const modal = document.getElementById('createModal');
             modal.classList.remove('modal-active');
             setTimeout(() => {
                 modal.style.display = 'none';
@@ -487,10 +695,30 @@
             }, 300);
         }
 
-        window.onclick = function(event) {
-            const modal = document.getElementById('topicModal');
-            if (event.target == modal) closeModal();
+        window.openViewModal = function (id, topic) {
+            document.getElementById('viewTitle').innerText = topic.title;
+            document.getElementById('viewBody').innerText = topic.body;
+            document.getElementById('viewDate').innerText = "Postado em " + topic.date;
+            document.getElementById('viewId').innerText = "ID: " + id;
+
+            const modal = document.getElementById('viewModal');
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('modal-active'), 10);
+        }
+
+        window.closeViewModal = function () {
+            const modal = document.getElementById('viewModal');
+            modal.classList.remove('modal-active');
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 300);
+        }
+
+        window.onclick = function (event) {
+            if (event.target == document.getElementById('createModal')) closeCreateModal();
+            if (event.target == document.getElementById('viewModal')) closeViewModal();
         }
     </script>
 </body>
+
 </html>
