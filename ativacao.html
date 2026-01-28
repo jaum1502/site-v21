@@ -1,22 +1,349 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>seiosSHOP</title>
-    <link rel="stylesheet   " type="text/css" href="folhadeestilo.css">
+    <title>arqsEXE | Fórum</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;500;700&family=Righteous&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Kanit", sans-serif;
+            background-color: #000;
+            color: white;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Fundo */
+        .background-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('background5.jpg');
+            background-size: cover;
+            background-position: center;
+            filter: blur(8px) brightness(0.7);
+            z-index: -1;
+        }
+
+        /* Header */
+        header {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 15px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo a {
+            color: #ffffff;
+            font-family: "Righteous", sans-serif;
+            font-size: 28px;
+            text-decoration: none;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+        }
+
+        .logo a:hover {
+            color: #2bff00;
+            text-shadow: 0 0 10px #2bff00;
+        }
+
+        .menu ul {
+            list-style: none;
+            display: flex;
+            gap: 30px;
+        }
+
+        .menu ul li a {
+            text-decoration: none;
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: 500;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+            transition: 0.3s;
+        }
+
+        .menu ul li a:hover {
+            color: #ff4d4d;
+        }
+
+        /* Container do Fórum */
+        .forum-container {
+            flex: 1;
+            width: 100%;
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 0 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding-bottom: 100px;
+        }
+
+        /* Tópico */
+        .topic {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .topic:hover {
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .topic-header {
+            padding: 20px 25px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .topic-title {
+            font-size: 20px;
+            font-weight: 500;
+            color: white;
+            text-transform: uppercase;
+            font-family: "Righteous", sans-serif;
+            letter-spacing: 1px;
+        }
+
+        .topic-icon {
+            font-size: 24px;
+            color: #ff4d4d;
+            transition: transform 0.3s ease;
+        }
+
+        .topic-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-out;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .topic-body {
+            padding: 25px;
+            font-size: 16px;
+            line-height: 1.6;
+            color: #ddd;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            white-space: pre-wrap;
+        }
+
+        .topic.active .topic-content {
+            max-height: 2000px;
+        }
+
+        .topic.active .topic-icon {
+            transform: rotate(45deg);
+            color: #ffffff;
+        }
+
+        /* FAB Button */
+        .fab-btn {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #ff4d4d, #b30000);
+            border: none;
+            color: white;
+            font-size: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(255, 77, 77, 0.4);
+            transition: transform 0.3s, box-shadow 0.3s;
+            z-index: 200;
+        }
+
+        .fab-btn:hover {
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: 0 0 30px rgba(255, 77, 77, 0.8);
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 300;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .modal-active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-box {
+            background: rgba(20, 20, 20, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            transform: scale(0.8);
+            transition: transform 0.3s;
+        }
+
+        .modal-active .modal-box {
+            transform: scale(1);
+        }
+
+        .modal-title {
+            font-family: "Righteous", sans-serif;
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: white;
+            text-align: center;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #aaa;
+            font-size: 14px;
+        }
+
+        .custom-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            color: white;
+            font-family: "Kanit", sans-serif;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .custom-input:focus {
+            border-color: #ff4d4d;
+        }
+
+        textarea.custom-input {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: flex-end;
+        }
+
+        .btn {
+            padding: 10px 25px;
+            border-radius: 8px;
+            border: none;
+            font-family: "Kanit", sans-serif;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-cancel {
+            background: transparent;
+            color: #aaa;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .btn-cancel:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+        }
+
+        .btn-save {
+            background: #ff4d4d;
+            color: white;
+        }
+
+        .btn-save:hover {
+            background: #d42e2e;
+            box-shadow: 0 0 15px rgba(255, 77, 77, 0.5);
+        }
+
+        .delete-btn {
+            background: transparent;
+            border: none;
+            color: #555;
+            font-size: 14px;
+            cursor: pointer;
+            margin-top: 20px;
+            text-align: right;
+            display: block;
+            width: 100%;
+        }
+        .delete-btn:hover {
+            color: red;
+            text-decoration: underline;
+        }
+
+        footer {
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 10px 20px;
+            text-align: left;
+            font-size: 14px;
+            color: #ffffff;
+            font-weight: 500;
+            margin-top: auto;
+        }
+
+        @media only screen and (max-width: 735px) {
+            header, footer { display: none; }
+            body { padding: 0; }
+            .forum-container { padding-top: 20px; }
+            .modal-box { width: 95%; padding: 20px; }
+        }
+    </style>
 </head>
 
-<body bgcolor="black">
+<body>
     <div class="background-image"></div>
-    <p class="textolamento">
-        ESSE SITE FOI FEITO APENAS PARA COMPUTADORES...<BR><BR>
-        OBRIGADO PELA COMPREENSÃO.
-    </p>
+    
     <header>
         <div class="logo">
-            <a href="" class="href">arqsEXE</a>
+            <a href="index.html">arqsEXE</a>
         </div>
         <nav class="menu">
             <ul>
@@ -27,11 +354,143 @@
             </ul>
         </nav>
     </header>
+
+    <div class="forum-container" id="forumContainer">
+        </div>
+
+    <button class="fab-btn" onclick="openModal()">+</button>
+
+    <div class="modal-overlay" id="topicModal">
+        <div class="modal-box">
+            <h2 class="modal-title">Novo Tópico</h2>
+            <div class="input-group">
+                <label>Título do Tópico</label>
+                <input type="text" id="topicTitle" class="custom-input" placeholder="Ex: Erro ao formatar...">
+            </div>
+            <div class="input-group">
+                <label>Conteúdo</label>
+                <textarea id="topicBody" class="custom-input" placeholder="Descreva aqui..."></textarea>
+            </div>
+            <div class="modal-buttons">
+                <button class="btn btn-cancel" onclick="closeModal()">Cancelar</button>
+                <button class="btn btn-save" id="saveBtn">Salvar Tópico</button>
+            </div>
+        </div>
+    </div>
+
     <footer>
-        <div class="texto-footer"> by: @jaum_15.02</div>
+        <div class="texto-footer">by: @jaum_15.02</div>
     </footer>
 
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getDatabase, ref, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
+        // SUA CONFIGURAÇÃO COMPLETA (JÁ COM A CORREÇÃO DO DATABASE URL)
+        const firebaseConfig = {
+            apiKey: "AIzaSyDMEd7LnttNLkXnbhW3s1Bt_UwT6iIgc8c",
+            authDomain: "arqsexe-forum-3d55b.firebaseapp.com",
+            projectId: "arqsexe-forum-3d55b",
+            storageBucket: "arqsexe-forum-3d55b.firebasestorage.app",
+            messagingSenderId: "819536464586",
+            appId: "1:819536464586:web:e05d81716493953b204233",
+            databaseURL: "https://arqsexe-forum-3d55b-default-rtdb.firebaseio.com" 
+        };
+
+        // Inicia o App
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+        const topicsRef = ref(db, 'topicos');
+
+        // Botão Salvar
+        document.getElementById('saveBtn').addEventListener('click', () => {
+            const title = document.getElementById('topicTitle').value;
+            const body = document.getElementById('topicBody').value;
+
+            if (title.trim() === '' || body.trim() === '') {
+                alert('Preencha título e conteúdo!');
+                return;
+            }
+
+            push(topicsRef, {
+                title: title,
+                body: body,
+                date: new Date().toLocaleDateString('pt-BR')
+            });
+
+            closeModal();
+        });
+
+        // Carregar Tópicos em Tempo Real
+        onValue(topicsRef, (snapshot) => {
+            const container = document.getElementById('forumContainer');
+            container.innerHTML = ''; 
+            
+            const data = snapshot.val();
+            
+            if (data) {
+                const listaTopicos = Object.entries(data);
+                listaTopicos.reverse().forEach(([id, topic]) => {
+                    createTopicElement(id, topic);
+                });
+            } else {
+                container.innerHTML = '<p style="text-align:center; color:#777; margin-top:50px; font-size:18px;">Nenhum tópico ainda. Seja o primeiro a criar!</p>';
+            }
+        });
+
+        function createTopicElement(id, topic) {
+            const container = document.getElementById('forumContainer');
+            const div = document.createElement('div');
+            div.className = 'topic';
+            div.id = id; 
+            div.innerHTML = `
+                <div class="topic-header">
+                    <span class="topic-title">${topic.title}</span>
+                    <span class="topic-icon">+</span>
+                </div>
+                <div class="topic-content">
+                    <div class="topic-body">
+                        ${topic.body}
+                        <button class="delete-btn" data-id="${id}">Excluir este tópico</button>
+                    </div>
+                </div>
+            `;
+            
+            div.querySelector('.topic-header').addEventListener('click', () => {
+                div.classList.toggle('active');
+            });
+
+            div.querySelector('.delete-btn').addEventListener('click', () => {
+                if(confirm('Tem certeza que deseja apagar este tópico para sempre?')) {
+                    remove(ref(db, 'topicos/' + id));
+                }
+            });
+
+            container.appendChild(div);
+        }
+
+        // Funções do Modal
+        window.openModal = function() {
+            const modal = document.getElementById('topicModal');
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('modal-active'), 10);
+            document.getElementById('topicTitle').focus();
+        }
+
+        window.closeModal = function() {
+            const modal = document.getElementById('topicModal');
+            modal.classList.remove('modal-active');
+            setTimeout(() => {
+                modal.style.display = 'none';
+                document.getElementById('topicTitle').value = '';
+                document.getElementById('topicBody').value = '';
+            }, 300);
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('topicModal');
+            if (event.target == modal) closeModal();
+        }
+    </script>
 </body>
-
 </html>
