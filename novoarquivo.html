@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Copiar código</title>
+</head>
+<body>
+
+<button onclick="copiar()">Copiar código</button>
+
+<script>
+  async function copiar() {
+    try {
+      const resposta = await fetch("test.txt");
+      const texto = await resposta.text();
+
+      await navigator.clipboard.writeText(texto);
+      alert("Código copiado com sucesso");
+    } catch (e) {
+      alert("Erro ao copiar o arquivo");
+    }
+  }
+</script>
+
+</body>
+</html>
