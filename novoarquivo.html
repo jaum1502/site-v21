@@ -9,17 +9,22 @@
 <button onclick="copiar()">Copiar código</button>
 
 <script>
-  async function copiar() {
-    try {
-      const resposta = await fetch("test.txt");
-      const texto = await resposta.text();
+async function copiar() {
+  const url = "https://raw.githubusercontent.com/jaum1502/site-v21/main/test.txt";
 
-      await navigator.clipboard.writeText(texto);
-      alert("Código copiado com sucesso");
-    } catch (e) {
-      alert("Erro ao copiar o arquivo");
-    }
+  try {
+    const r = await fetch(url);
+    if (!r.ok) throw new Error("Erro ao buscar o arquivo");
+
+    const texto = await r.text();
+    await navigator.clipboard.writeText(texto);
+
+    alert("Código copiado");
+  } catch (e) {
+    console.error(e);
+    alert("Falha ao copiar");
   }
+}
 </script>
 
 </body>
