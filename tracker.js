@@ -84,7 +84,6 @@
         .min-btn:active { transform: translateY(1px); }
         .min-btn svg { width: 18px; height: 18px; fill: currentColor; }
 
-        /* Botão de Filtro Ativo */
         .min-btn.active-filter {
             background: rgba(59, 130, 246, 0.2);
             border-color: #3b82f6;
@@ -177,10 +176,9 @@
         .arq-item:hover img { transform: scale(1.1); }
         .arq-info { display: flex; flex-direction: column; }
         
-        /* Ajuste para nome e verificado */
         .arq-user-row { display: flex; align-items: center; gap: 4px; }
         .arq-user { font-weight: 700; font-size: 13px; color: #f1f5f9; }
-        .verified-icon { width: 14px; height: 14px; fill: #38bdf8; } /* Azul verificado */
+        .verified-icon { width: 14px; height: 14px; fill: #38bdf8; } 
         
         .arq-date { font-size: 10px; color: #64748b; margin-top: 2px; }
 
@@ -222,7 +220,7 @@
     mainDiv.id = 'arq-tracker-panel';
     mainDiv.innerHTML = `
         <div class="arq-header" id="arq-header-drag">
-            <h2>ArqSEXE 13.0</h2>
+            <h2>ArqSEXE 13.2</h2>
             <button id="btn-minimize" class="min-btn">
                 <svg viewBox="0 0 24 24"><path d="M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
             </button>
@@ -261,7 +259,7 @@
             <div id="arq-status" class="arq-status">Sistema Pronto</div>
             <button id="btn-clear-hist" class="btn-secondary">
                 <svg viewBox="0 0 24 24"><path d="M16 9v10H8V9h8m-1.5-6h-5l-1 1H5v2h14V4h-3.5l-1-1zM18 7H6v12c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7z"/></svg>
-                Limpar Dados
+                Limpar Dados (Liberar Memória)
             </button>
         </div>
     `;
@@ -328,7 +326,7 @@
     let currentSubTab = ''; 
     let savedTargets = JSON.parse(localStorage.getItem('arq_saved_targets')) || [];
     let notBackList = []; 
-    let filterVerified = false; // Estado do filtro
+    let filterVerified = false; 
 
     const toggleSidePanel = (show) => {
         if(show) {
@@ -343,11 +341,10 @@
 
     document.getElementById('btn-close-side').onclick = () => toggleSidePanel(false);
 
-    // Lógica do botão de filtro
     document.getElementById('btn-filter-verified').onclick = (e) => {
         filterVerified = !filterVerified;
         e.currentTarget.classList.toggle('active-filter', filterVerified);
-        updateUI(); // Atualiza a lista na hora
+        updateUI(); 
     };
 
     const updateUI = () => {
@@ -374,7 +371,6 @@
             title = "Não te seguem de volta";
         }
 
-        // APLICA O FILTRO DE VERIFICADOS
         if(filterVerified) {
             list = list.filter(u => !u.is_verified);
         }
@@ -405,7 +401,6 @@
                 }
             }
 
-            // Ícone de verificado
             const verifiedBadge = u.is_verified ? 
                 `<svg class="verified-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>` 
                 : '';
@@ -507,9 +502,11 @@
             chip.onclick = () => { document.getElementById('stalker-target').value = targetName; runLogic('stalk'); };
             chip.querySelector('.chip-del').onclick = (e) => {
                 e.stopPropagation(); 
-                if(confirm(`Remover ${targetName}?`)) {
+                if(confirm(`Deseja remover ${targetName} e APAGAR todos os seus dados salvos?`)) {
                     savedTargets = savedTargets.filter(t => (typeof t === 'string' ? t : t.user) !== targetName);
                     localStorage.setItem('arq_saved_targets', JSON.stringify(savedTargets));
+                    localStorage.removeItem(`arq_db_${targetName}`);
+                    localStorage.removeItem(`arq_hist_${targetName}`);
                     renderSavedTargets();
                 }
             };
@@ -574,7 +571,7 @@
                      user: e.node.username, 
                      pic: e.node.profile_pic_url, 
                      follows_viewer: e.node.follows_viewer,
-                     is_verified: e.node.is_verified // CAPTURA VERIFICADO
+                     is_verified: e.node.is_verified 
                  });
             });
             hasNext = data.page_info.has_next_page;
@@ -665,8 +662,17 @@
             oldDB.following = followingList;
             if(isStalker) oldDB.followers = followersList;
 
-            localStorage.setItem(HIST_KEY, JSON.stringify(history));
-            localStorage.setItem(DB_KEY, JSON.stringify(oldDB));
+            try {
+                localStorage.setItem(HIST_KEY, JSON.stringify(history));
+                localStorage.setItem(DB_KEY, JSON.stringify(oldDB));
+            } catch (storageError) {
+                if (storageError.name === 'QuotaExceededError' || storageError.name === 'NS_ERROR_DOM_QUOTA_REACHED') {
+                    updateStatus("ERRO: MEMÓRIA CHEIA! Limpe os dados.", "#f87171");
+                    alert("Atenção: O armazenamento do navegador lotou!\n\nEste perfil é muito grande. Para continuar usando o script, clique em 'Limpar Dados' e tente novamente em perfis menores.");
+                    return;
+                }
+                throw storageError;
+            }
             
             if(isFirstTime) updateStatus("✨ Banco Criado! ✨", "#34d399");
             else updateStatus("Concluído", "#34d399");
@@ -692,10 +698,16 @@
     document.getElementById('btn-stalk').onclick = () => runLogic('stalk');
     
     document.getElementById('btn-clear-hist').onclick = () => {
-        if(confirm("Limpar histórico?")) {
-            const target = currentMode === 'me' ? 'me' : document.getElementById('stalker-target').value.replace('@','');
-            localStorage.removeItem(`arq_hist_${target}`);
-            updateUI(); 
+        if(confirm("Deseja apagar TODOS os dados de TODAS as pessoas que você já escaneou (formatação geral)?")) {
+            Object.keys(localStorage).forEach(k => { 
+                if(k.startsWith('arq_')) localStorage.removeItem(k); 
+            });
+            savedTargets = [];
+            notBackList = [];
+            renderSavedTargets();
+            document.getElementById('arq-result-list').innerHTML = '';
+            toggleSidePanel(false);
+            updateStatus("TODOS OS DADOS APAGADOS!", "#34d399");
         }
     };
 
